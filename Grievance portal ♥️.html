@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shifu Ji's Grievance Portal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #ffe6f0;
+      overflow: hidden;
+    }
+
+    .sunflowers {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif');
+      background-repeat: repeat;
+      background-size: 100px;
+      z-index: -1;
+      opacity: 0.2;
+    }
+
+    .love-gif {
+      display: block;
+      margin: 10px auto 20px;
+      max-width: 200px;
+      border-radius: 10px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff0f5;
+      border: 2px solid pink;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    h1, p {
+      text-align: center;
+      color: #ff69b4;
+    }
+
+    .btn {
+      background-color: #ffb6c1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    textarea, input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid pink;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .final-message {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="sunflowers"></div>
+
+  <div class="container" id="loginPage">
+    <img class="love-gif" src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="I love you gif" />
+    <h1>Welcome 💕</h1>
+    <p>Please enter your secret password to continue 🗝️</p>
+    <input type="password" id="password" placeholder="Enter your magic password 💖" />
+    <button class="btn" onclick="login()">Login</button>
+  </div>
+
+  <div class="container hidden" id="welcomePage">
+    <h1>Hello, Shifu ji 💖</h1>
+    <p>To submit your grievances, please hit continue and let me know what problem it is that I need to beat down for you 🥊</p>
+    <button class="btn" onclick="showForm()">Continue</button>
+  </div>
+
+  <div class="container hidden" id="formPage">
+    <h1>Grievance Submission 🌸</h1>
+    <form id="grievanceForm" action="https://formspree.io/f/xeogdrqk" method="POST">
+      <input type="text" name="title" id="title" placeholder="What's bothering you?" required />
+      <textarea name="details" id="details" rows="5" placeholder="Tell me all about it, no holding back..." required></textarea>
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+
+  <div class="container hidden" id="thankYouPage">
+    <div class="final-message">
+      <h1>Thank you 💐</h1>
+      <p>Your response has been sent to Uzair and he will look into the matter 🕵️‍♂️</p>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const passwordInput = document.getElementById("password").value;
+      if (passwordInput === "uzairlovesshifa") {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("welcomePage").classList.remove("hidden");
+      } else {
+        alert("Oopsie! Wrong password sweetie 🥺 Try again 💕");
+      }
+    }
+
+    function showForm() {
+      document.getElementById("welcomePage").classList.add("hidden");
+      document.getElementById("formPage").classList.remove("hidden");
+    }
+
+    document.getElementById("grievanceForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          form.reset();
+          document.getElementById("formPage").classList.add("hidden");
+          document.getElementById("thankYouPage").classList.remove("hidden");
+        } else {
+          alert("Oops! Something went wrong. Try again.");
+        }
+      }).catch(() => {
+        alert("Oops! Something went wrong. Try again.");
+      });
+    });
+  </script>
+</body>
+</html>
